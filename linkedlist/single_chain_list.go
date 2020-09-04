@@ -9,26 +9,26 @@ import (
 // SingleChainListNode 单链表节点
 type SingleChainListNode struct {
 	Next  *SingleChainListNode
-	Value int
+	Value float64
 }
 
-// SingleChainListHeader 但链表头节点
-type SingleChainListHeader struct {
+// SingleChainList 单链表头节点
+type SingleChainList struct {
 	Header *SingleChainListNode
 }
 
 // IsEmpty 判断链表是否为空
-func (sclh *SingleChainListHeader) IsEmpty() bool {
-	if sclh.Header == nil {
+func (scl *SingleChainList) IsEmpty() bool {
+	if scl.Header == nil {
 		return true
 	}
 	return false
 }
 
 // Length 获取链表的长度
-func (sclh *SingleChainListHeader) Length() int {
+func (scl *SingleChainList) Length() int {
 	count := 0
-	cur := sclh.Header
+	cur := scl.Header
 	for cur != nil {
 		count++
 		cur = cur.Next
@@ -37,23 +37,23 @@ func (sclh *SingleChainListHeader) Length() int {
 }
 
 // Add 从头部添加节点
-func (sclh *SingleChainListHeader) Add(value int) {
+func (scl *SingleChainList) Add(value float64) {
 	node := &SingleChainListNode{
 		Value: value,
-		Next:  sclh.Header,
+		Next:  scl.Header,
 	}
-	sclh.Header = node
+	scl.Header = node
 }
 
 // Append 从尾部添加节点
-func (sclh *SingleChainListHeader) Append(value int) {
-	if sclh.IsEmpty() {
-		sclh.Header = &SingleChainListNode{
+func (scl *SingleChainList) Append(value float64) {
+	if scl.IsEmpty() {
+		scl.Header = &SingleChainListNode{
 			Value: value,
 		}
 		return
 	}
-	header := sclh.Header
+	header := scl.Header
 	for header.Next != nil {
 		header = header.Next
 	}
@@ -63,18 +63,18 @@ func (sclh *SingleChainListHeader) Append(value int) {
 }
 
 // Insert 在指定位置添加节点
-func (sclh *SingleChainListHeader) Insert(index int, value int) {
+func (scl *SingleChainList) Insert(index int, value float64) {
 	switch {
 	// 如果index小于0，则在头部添加
 	case index <= 0:
-		sclh.Add(value)
+		scl.Add(value)
 	// 如果index大于当前链表长度，则在尾部添加
-	case index > sclh.Length():
-		sclh.Append(value)
+	case index > scl.Length():
+		scl.Append(value)
 	default:
 		count := 0
-		pre := sclh.Header
-		for count < index-1 {
+		pre := scl.Header
+		for count < index {
 			pre = pre.Next
 			count++
 		}
@@ -86,17 +86,17 @@ func (sclh *SingleChainListHeader) Insert(index int, value int) {
 }
 
 // RemoveByIndex 删除指定位置的节点,并返回该节点
-func (sclh *SingleChainListHeader) RemoveByIndex(index int) (res *SingleChainListNode) {
+func (scl *SingleChainList) RemoveByIndex(index int) (res *SingleChainListNode) {
 	switch {
 	// index小于等于0，则删除头部节点
 	case index <= 0:
-		res = sclh.Header
-		sclh.Header = sclh.Header.Next
+		res = scl.Header
+		scl.Header = scl.Header.Next
 	// index大于当前链表长度，则删除尾部节点
-	case index >= sclh.Length():
+	case index >= scl.Length():
 		var pre *SingleChainListNode
-		node := sclh.Header
-		for node != nil {
+		node := scl.Header
+		for node.Next != nil {
 			pre = node
 			node = node.Next
 		}
@@ -104,7 +104,7 @@ func (sclh *SingleChainListHeader) RemoveByIndex(index int) (res *SingleChainLis
 		pre.Next = nil
 	default:
 		var pre *SingleChainListNode
-		node := sclh.Header
+		node := scl.Header
 		count := 0
 		for count < index {
 			pre = node
@@ -118,9 +118,9 @@ func (sclh *SingleChainListHeader) RemoveByIndex(index int) (res *SingleChainLis
 }
 
 // RemoveByValue 删除指定值的节点
-func (sclh *SingleChainListHeader) RemoveByValue(value int) (res *SingleChainListNode) {
+func (scl *SingleChainList) RemoveByValue(value float64) (res *SingleChainListNode) {
 	var pre *SingleChainListNode
-	node := sclh.Header
+	node := scl.Header
 	for node != nil {
 		if node.Value != value {
 			pre = node
@@ -128,7 +128,7 @@ func (sclh *SingleChainListHeader) RemoveByValue(value int) (res *SingleChainLis
 			continue
 		}
 		if pre == nil {
-			sclh.Header = node.Next
+			scl.Header = node.Next
 		} else {
 			pre.Next = node.Next
 		}
@@ -139,10 +139,10 @@ func (sclh *SingleChainListHeader) RemoveByValue(value int) (res *SingleChainLis
 }
 
 // GetNodeByIndex 根据index获取node
-func (sclh *SingleChainListHeader) GetNodeByIndex(index int) (res *SingleChainListNode, err error) {
+func (scl *SingleChainList) GetNodeByIndex(index int) (res *SingleChainListNode, err error) {
 	count := 0
-	node := sclh.Header
-	if sclh.Length() <= index {
+	node := scl.Header
+	if scl.Length() <= index {
 		return res, errors.New("Out of index")
 	}
 	if index < 0 {

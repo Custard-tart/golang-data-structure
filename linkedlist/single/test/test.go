@@ -15,7 +15,7 @@ func main() {
 	a.Append(5)
 	a.Append(6)
 
-	a.Reversal()
+	single.ReversalSingleChainList(&a)
 
 	node := a.Header
 	for node != nil {

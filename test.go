@@ -3,17 +3,18 @@ package main
 import (
 	"fmt"
 
-	"github.com/Custard-tart/golang-data-structure/linkedlist"
+	"github.com/Custard-tart/golang-data-structure/linkedlist/double"
+	"github.com/Custard-tart/golang-data-structure/linkedlist/single"
 )
 
 func main() {
 	// SingleChainListTest()
-	DoubleLinkedListTest()
+	// DoubleLinkedListTest()
 }
 
 // SingleChainListTest 测试单链表
 func SingleChainListTest() {
-	a := linkedlist.SingleChainList{}
+	a := single.ChainList{}
 	a.Append(1)
 	a.Append(2)
 	a.Append(3)
@@ -36,7 +37,7 @@ func SingleChainListTest() {
 
 // DoubleLinkedListTest 测试双向链表
 func DoubleLinkedListTest() {
-	a := linkedlist.DoubleLinkedList{}
+	a := double.LinkedList{}
 	a.Append(1)
 	a.Append(2)
 	a.Append(3)

@@ -1,31 +1,31 @@
-package linkedlist
+package double
 
 // 单链表：增删改查
 
-// DoubleLinkedListNode 双向链表节点
-type DoubleLinkedListNode struct {
-	Pre   *DoubleLinkedListNode
-	Next  *DoubleLinkedListNode
+// LinkedListNode 双向链表节点
+type LinkedListNode struct {
+	Pre   *LinkedListNode
+	Next  *LinkedListNode
 	Value float64
 }
 
-// DoubleLinkedList 双向链表头节点
-type DoubleLinkedList struct {
-	Header *DoubleLinkedListNode
+// LinkedList 双向链表头节点
+type LinkedList struct {
+	Header *LinkedListNode
 }
 
 // IsEmpty 判断链表是否为空
-func (dll *DoubleLinkedList) IsEmpty() bool {
-	if dll.Header == nil {
+func (ll *LinkedList) IsEmpty() bool {
+	if ll.Header == nil {
 		return true
 	}
 	return false
 }
 
 // Length 获取链表的长度
-func (dll *DoubleLinkedList) Length() int {
+func (ll *LinkedList) Length() int {
 	count := 0
-	cur := dll.Header
+	cur := ll.Header
 	for cur != nil {
 		count++
 		cur = cur.Next
@@ -34,50 +34,50 @@ func (dll *DoubleLinkedList) Length() int {
 }
 
 // Add 从头部添加节点
-func (dll *DoubleLinkedList) Add(value float64) {
-	node := &DoubleLinkedListNode{
+func (ll *LinkedList) Add(value float64) {
+	node := &LinkedListNode{
 		Value: value,
-		Next:  dll.Header,
+		Next:  ll.Header,
 	}
-	dll.Header = node
+	ll.Header = node
 }
 
 // Append 从尾部添加节点
-func (dll *DoubleLinkedList) Append(value float64) {
-	if dll.IsEmpty() {
-		dll.Header = &DoubleLinkedListNode{
+func (ll *LinkedList) Append(value float64) {
+	if ll.IsEmpty() {
+		ll.Header = &LinkedListNode{
 			Value: value,
 		}
 		return
 	}
-	header := dll.Header
+	header := ll.Header
 	for header.Next != nil {
 		header = header.Next
 	}
-	header.Next = &DoubleLinkedListNode{
+	header.Next = &LinkedListNode{
 		Value: value,
 	}
 }
 
 // Insert 在指定位置添加节点
-func (dll *DoubleLinkedList) Insert(index int, value float64) {
+func (ll *LinkedList) Insert(index int, value float64) {
 	switch {
 	// 如果index小于0，则在头部添加
 	case index <= 0:
-		dll.Add(value)
+		ll.Add(value)
 	// 如果index大于当前链表长度，则在尾部添加
-	case index > dll.Length():
-		dll.Append(value)
+	case index > ll.Length():
+		ll.Append(value)
 	default:
 		count := 0
-		var pre *DoubleLinkedListNode
-		node := dll.Header
+		var pre *LinkedListNode
+		node := ll.Header
 		for count < index {
 			pre = node
 			node = node.Next
 			count++
 		}
-		pre.Next = &DoubleLinkedListNode{
+		pre.Next = &LinkedListNode{
 			Pre:   pre,
 			Next:  node,
 			Value: value,
@@ -86,19 +86,19 @@ func (dll *DoubleLinkedList) Insert(index int, value float64) {
 }
 
 // RemoveByIndex 删除指定位置的节点,并返回该节点
-func (dll *DoubleLinkedList) RemoveByIndex(index int) (res *DoubleLinkedListNode) {
+func (ll *LinkedList) RemoveByIndex(index int) (res *LinkedListNode) {
 	switch {
 
 	// index小于等于0，则删除头部节点
 	case index <= 0:
-		res = dll.Header
-		dll.Header.Next.Pre = nil
-		dll.Header = dll.Header.Next
+		res = ll.Header
+		ll.Header.Next.Pre = nil
+		ll.Header = ll.Header.Next
 
 	// index大于当前链表长度，则删除尾部节点
-	case index >= dll.Length():
-		var pre *DoubleLinkedListNode
-		node := dll.Header
+	case index >= ll.Length():
+		var pre *LinkedListNode
+		node := ll.Header
 		for node.Next != nil {
 			pre = node
 			node = node.Next
@@ -106,8 +106,8 @@ func (dll *DoubleLinkedList) RemoveByIndex(index int) (res *DoubleLinkedListNode
 		res = node
 		pre.Next = nil
 	default:
-		var pre *DoubleLinkedListNode
-		node := dll.Header
+		var pre *LinkedListNode
+		node := ll.Header
 		count := 0
 		for count < index {
 			pre = node
@@ -122,9 +122,9 @@ func (dll *DoubleLinkedList) RemoveByIndex(index int) (res *DoubleLinkedListNode
 }
 
 // RemoveByValue 删除指定值的节点
-func (dll *DoubleLinkedList) RemoveByValue(value float64) (res *DoubleLinkedListNode) {
-	var pre *DoubleLinkedListNode
-	node := dll.Header
+func (ll *LinkedList) RemoveByValue(value float64) (res *LinkedListNode) {
+	var pre *LinkedListNode
+	node := ll.Header
 	for node != nil {
 		if node.Value != value {
 			pre = node
@@ -132,7 +132,7 @@ func (dll *DoubleLinkedList) RemoveByValue(value float64) (res *DoubleLinkedList
 			continue
 		}
 		if pre == nil {
-			dll.Header = node.Next
+			ll.Header = node.Next
 		} else {
 			pre.Next = node.Next
 			node.Next.Pre = pre
